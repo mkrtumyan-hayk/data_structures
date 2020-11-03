@@ -90,7 +90,6 @@ T& List<T>::operator[](const int index)
 		current = current->pNext;
 		counter++;
 	}
-
 }
 
 template<typename T>
@@ -103,7 +102,6 @@ void List<T>::pop_front()
 	delete temp;
 	
 	Size--;
-
 
 }
 
@@ -140,8 +138,6 @@ void List<T>::insert(T value, int index)
 		previous->pNext = newNode;
 
 		Size++;
-
-
 	}
 }
 
@@ -193,49 +189,5 @@ void List<T>::remove_item(T value) {
 		previous = previous->pNext;
 		toDelete = previous->pNext;
 
-		//toDelete = previous->pNext;
 	}
-}
-
-
-int main() {
-	
-	List<int> lst;
-	
-	lst.push_back(15);
-	lst.push_back(17);
-	lst.push_back(25);
-	lst.push_back(0);
-	lst.push_back(12);
-	lst.push_back(55);
-
-	for (int i = 0; i < lst.GetSize(); ++i) {
-		std::cout << lst[i] << std::endl;
-	}
-	std::cout << std::endl << "$$$$$$$$$$$$$$$$$$$$$$$$$" << std::endl << std::endl;
-
-	//lst.pop_back();
-	lst.remove_item(55);
-
-
-	for (int i = 0; i < lst.GetSize(); ++i) {
-		std::cout << lst[i] << std::endl;
-	}
-	
-
-	/*for (int i = 0; i < lst.GetSize(); ++i) {
-		std::cout << lst[i] << std::endl;
-	}
-
-	std::cout << "Elements in list: " << lst.GetSize() << std::endl << std::endl;
-
-	lst.pop_back();
-
-	for (int i = 0; i < lst.GetSize(); ++i) {
-		std::cout << lst[i] << std::endl;
-	}
-
-	std::cout << "Elements in list: " << lst.GetSize() << std::endl << std::endl;*/
-
-
 }
