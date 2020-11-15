@@ -169,6 +169,7 @@ void List<T>::remove_item(T value) {
 		Node<T>* ToDelete = head;;
 		head = head->pNext;
 		delete ToDelete;
+		Size--;
 	}
 	if (head == nullptr) {
 		return;
