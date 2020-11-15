@@ -165,18 +165,19 @@ void List<T>::pop_back()
 
 template<typename T>
 void List<T>::remove_item(T value) {
+	
 	while (head->data == value && head != nullptr) {
 		Node<T>* ToDelete = head;;
 		head = head->pNext;
 		delete ToDelete;
-		Size--;
+		--Size;
 	}
 	if (head == nullptr) {
 		return;
 	}
 
-	Node<int>* previous = head;
-	Node<int>* toDelete = previous->pNext;
+	Node<T>* previous = head;
+	Node<T>* toDelete = previous->pNext;
 
 	while (previous->pNext != nullptr) {
 		if (toDelete->data == value) {
@@ -184,11 +185,12 @@ void List<T>::remove_item(T value) {
 			toDelete = previous->pNext;
 			previous->pNext = toDelete->pNext;
 			delete toDelete;
-			Size--;
-			continue;
+			--Size;
 		}
-		previous = previous->pNext;
+		else {
+			previous = previous->pNext;
+			toDelete = previous->pNext;
+		}
 		toDelete = previous->pNext;
-
 	}
 }
