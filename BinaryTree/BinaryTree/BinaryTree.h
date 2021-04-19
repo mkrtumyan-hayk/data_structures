@@ -4,17 +4,21 @@ template <typename T>
 class BinaryTree {
 public:
 
-	int get_size() { return size; }
+	int get_size() const{ return size; }
 
-	bool search(T value);
+	bool search(T value) const;
 
 	void remove(T value);
 
 	BinaryTree();
 
+	BinaryTree(const BinaryTree<T> &other);
+
+	BinaryTree<T>& operator = (const BinaryTree<T>& other);
+
 	void add(T value);
 
-	void print_inorder() {
+	void print_inorder() const{
 		inorder(this->root);
 	}
 
@@ -22,7 +26,10 @@ public:
 		destroy(this->root);
 	}
 
-	
+	~BinaryTree() {
+		destroy_tree();	
+	}
+
 
 private:
 
@@ -40,10 +47,12 @@ private:
 		}
 	};
 
+	void copy_help(Node<T>* root, const Node<T>* other);
+
 	int size;
 	Node<T>* root;
 
-	void inorder(Node<T>* root) {
+	void inorder(Node<T>* root) const{
 
 		if (root == nullptr) { return; }
 		inorder(root->l_leaf);
@@ -61,12 +70,60 @@ private:
 	}
 };
 
+
 template <typename T>
 BinaryTree<T>::BinaryTree()
 {
 	size = 0;
 	root = nullptr;
 }
+
+template<typename T>
+BinaryTree<T>::BinaryTree(const BinaryTree<T>& other)
+{
+	if (other.root == nullptr) {
+		this->root = nullptr;
+		return;
+	}
+	this->root = new Node<T>(other.root->data);
+	copy_help(this->root, other.root);
+
+}
+
+template<typename T>
+BinaryTree<T>& BinaryTree<T>::operator=(const BinaryTree<T>& other)
+{
+
+	if (this->root != nullptr) {
+		destroy_tree();
+	}
+
+	this->size = other.size;
+
+	if (other.root == nullptr) {
+		this->root = nullptr;
+	}
+	else {
+		this->root = new Node<T>(other.root->data);
+		copy_help(this->root, other.root);		
+	}
+	return *this;
+
+}
+
+template<typename T>
+void BinaryTree<T>::copy_help(Node<T>* root, const Node<T>* other)
+{
+	if (other->l_leaf != nullptr) {
+		root->l_leaf = new Node<T>(other->l_leaf->data);
+		copy_help(root->l_leaf, other->l_leaf);
+	}
+	if (other->r_leaf != nullptr) {
+		root->r_leaf = new Node<T>(other->r_leaf->data);
+		copy_help(root->r_leaf, other->r_leaf);
+	}
+}
+
 
 template<typename T>
 void BinaryTree<T>::add(T value)
@@ -93,6 +150,9 @@ void BinaryTree<T>::add(T value)
 			else if (value < current->data && current->l_leaf != nullptr) {
 				current = current->l_leaf;
 			}
+			else if (value == current->data) {
+				return;
+			}
 	}
 
 
@@ -100,7 +160,7 @@ void BinaryTree<T>::add(T value)
 }
 
 template<typename T>
-bool BinaryTree<T>::search(T value) {
+bool BinaryTree<T>::search(T value) const{
 
 	if (root == nullptr) {
 		return false;
